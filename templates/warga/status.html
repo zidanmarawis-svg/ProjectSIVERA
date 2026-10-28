@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h3 class="fw-bold">Status Pengajuan Saya</h3>
+  <a class="btn btn-success shadow-sm" href="{{ url_for('warga.ajukan') }}">+ Pengajuan Baru</a>
+</div>
+
+<div class="card shadow-sm border-0" style="border-radius: 15px;">
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-hover mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>ID</th>
+            <th>Tanggal</th>
+            <th>Status</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in daftar %}
+          <tr>
+            <td class="fw-bold">#{{ p.id }}</td>
+            <td>{{ p.created_at.strftime('%d %b %Y') }}</td>
+            <td>
+              {% if p.status == 'menunggu' %}
+                <span class="badge bg-secondary">Menunggu</span>
+              {% elif p.status == 'disetujui' %}
+                <span class="badge bg-success">Disetujui</span>
+              {% elif p.status == 'ditolak' %}
+                <span class="badge bg-danger">Ditolak</span>
+              {% elif p.status == 'perbaikan' %}
+                <span class="badge bg-warning text-dark">Perlu Perbaikan</span>
+              {% else %}
+                <span class="badge bg-info text-dark">{{ p.status|capitalize }}</span>
+              {% endif %}
+            </td>
+            <td>
+              {% if p.status == 'ditolak' %}
+              <form method="post" action="{{ url_for('warga.banding', pid=p.id) }}">
+                <button class="btn btn-sm btn-outline-warning">Ajukan Banding</button>
+              </form>
+              {% elif p.status == 'perbaikan' %}
+                <a href="#" class="btn btn-sm btn-outline-primary">Perbaiki Data</a>
+              {% else %}
+                <span class="text-muted small">-</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="4" class="text-center py-4 text-muted">Belum ada pengajuan.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

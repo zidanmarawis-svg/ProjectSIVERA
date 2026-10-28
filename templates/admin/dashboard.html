@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3 class="fw-bold mb-4">Dashboard Admin</h3>
+
+<!-- Kartu Statistik -->
+<div class="row mb-4">
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm text-white bg-primary" style="border-radius: 15px;">
+      <div class="card-body p-4">
+        <h6 class="text-uppercase mb-2 opacity-75">Total Pengajuan</h6>
+        <h2 class="mb-0 fw-bold">{{ total }}</h2>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm text-white bg-success" style="border-radius: 15px;">
+      <div class="card-body p-4">
+        <h6 class="text-uppercase mb-2 opacity-75">Persentase Layak</h6>
+        <h2 class="mb-0 fw-bold">{{ persen_layak }}%</h2>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm text-white bg-warning text-dark" style="border-radius: 15px;">
+      <div class="card-body p-4">
+        <h6 class="text-uppercase mb-2 opacity-75">Menunggu Verifikasi</h6>
+        <h2 class="mb-0 fw-bold">{{ per_status.get('menunggu', 0) }}</h2>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Grafik -->
+<div class="row">
+  <div class="col-md-8">
+    <div class="card border-0 shadow-sm" style="border-radius: 15px;">
+      <div class="card-header bg-white fw-bold pt-3 pb-0" style="border-radius: 15px 15px 0 0;">Statistik Status Pengajuan</div>
+      <div class="card-body">
+        <canvas id="chartStatus" height="100"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm h-100" style="border-radius: 15px;">
+      <div class="card-header bg-white fw-bold pt-3 pb-0" style="border-radius: 15px 15px 0 0;">Aksi Cepat</div>
+      <div class="card-body d-flex flex-column gap-2">
+        <a href="{{ url_for('admin.kriteria') }}" class="btn btn-outline-primary text-start">Kelola Kriteria & Bobot</a>
+        <a href="{{ url_for('admin.export_excel') }}" class="btn btn-outline-success text-start">Ekspor Laporan (Excel)</a>
+        <a href="{{ url_for('admin.audit') }}" class="btn btn-outline-secondary text-start">Lihat Audit Log</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

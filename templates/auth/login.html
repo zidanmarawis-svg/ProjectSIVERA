@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    /* Mengatur tinggi minimal agar memenuhi layar */
+    .login-wrapper {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .login-card {
+        width: 100%;
+        max-width: 900px;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        background: #fff;
+    }
+    .login-left {
+        /* Gunakan gradient sebagai fallback jika tidak ada gambar */
+        background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+        padding: 40px;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+    }
+    /* Efek dekorasi lingkaran di background */
+    .login-left::before {
+        content: '';
+        position: absolute;
+        top: -50px;
+        right: -50px;
+        width: 200px;
+        height: 200px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 50%;
+    }
+    .login-left::after {
+        content: '';
+        position: absolute;
+        bottom: -80px;
+        left: -30px;
+        width: 250px;
+        height: 250px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 50%;
+    }
+    .login-right {
+        padding: 40px;
+    }
+    .form-control-custom {
+        border-radius: 10px;
+        padding: 12px 15px;
+        border: 1px solid #e0e0e0;
+        background-color: #f8f9fa;
+        transition: all 0.3s;
+    }
+    .form-control-custom:focus {
+        background-color: #fff;
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+        border-color: #0d6efd;
+    }
+    .btn-login {
+        border-radius: 10px;
+        padding: 12px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+</style>
+
+<div class="login-wrapper">
+    <div class="login-card">
+        <div class="row g-0">
+            <!-- Sisi Kiri: Branding -->
+            <div class="col-md-6 login-left d-none d-md-flex">
+                <div style="position: relative; z-index: 1;">
+                    <h2 class="mb-3 fw-bold">SPK Bantuan Sosial</h2>
+                    <p class="mb-4">Sistem Pendukung Keputusan Verifikasi Kelayakan Penerima Bantuan Sosial. Objektif, Transparan, dan Terukur.</p>
+                    <div class="mt-4">
+                        <span class="badge bg-light text-primary px-3 py-2 rounded-pill shadow-sm">SAW</span>
+                        <span class="badge bg-light text-primary px-3 py-2 rounded-pill shadow-sm ms-2">Machine Learning</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sisi Kanan: Form Login -->
+            <div class="col-md-6 login-right">
+                <div class="text-center mb-4">
+                    <h3 class="fw-bold text-dark">Selamat Datang</h3>
+                    <p class="text-muted">Silakan masuk ke akun Anda</p>
+                </div>
+
+                <!-- Pesan Flash (Error/Sukses) -->
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for m in messages %}
+                            <div class="alert alert-danger py-2">{{ m }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form method="post">
+                    <div class="mb-3">
+                        <label class="form-label text-muted small fw-bold">Username</label>
+                        <input type="text" name="username" class="form-control form-control-custom" placeholder="Masukkan username" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label text-muted small fw-bold">Password</label>
+                        <input type="password" name="password" class="form-control form-control-custom" placeholder="Masukkan password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 btn-login shadow-sm">Masuk Sistem</button>
+                </form>
+
+                <div class="mt-4 text-center">
+                    <small class="text-muted">Akun Demo:</small><br>
+                    <small class="text-muted">
+                        <b>admin</b>/admin123 &bull; <b>staf</b>/staf123 &bull; <b>warga</b>/warga123
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

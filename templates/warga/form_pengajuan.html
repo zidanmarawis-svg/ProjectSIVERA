@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-10">
+    <div class="card shadow-sm border-0" style="border-radius: 15px;">
+      <div class="card-header bg-primary text-white" style="border-radius: 15px 15px 0 0;">
+        <h4 class="mb-0">Formulir Pengajuan Bantuan Sosial</h4>
+      </div>
+      <div class="card-body p-4">
+        <p class="text-muted mb-4">Pastikan semua data diisi dengan benar. Data akan diverifikasi oleh sistem menggunakan metode SAW dan Machine Learning.</p>
+        
+        <form method="post" enctype="multipart/form-data">
+          <h6 class="text-primary fw-bold mb-3 border-bottom pb-2">A. Data Diri</h6>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label class="form-label small fw-bold">NIK (16 Digit)</label>
+              <input class="form-control" name="nik" placeholder="Contoh: 320101..." required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold">No. Kartu Keluarga</label>
+              <input class="form-control" name="no_kk" placeholder="Nomor KK" required>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label class="form-label small fw-bold">Nama Lengkap</label>
+              <input class="form-control" name="nama" placeholder="Sesuai KTP" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold">Alamat Lengkap</label>
+              <input class="form-control" name="alamat" placeholder="Jalan, RT/RW, Kelurahan" required>
+            </div>
+          </div>
+
+          <h6 class="text-primary fw-bold mb-3 mt-4 border-bottom pb-2">B. Data Ekonomi & Kondisi</h6>
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label class="form-label small fw-bold">Penghasilan / Bulan (Rp)</label>
+              <input class="form-control" type="number" name="penghasilan" placeholder="Contoh: 1500000" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label small fw-bold">Jumlah Tanggungan</label>
+              <input class="form-control" type="number" name="tanggungan" placeholder="Jumlah anak/keluarga" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label small fw-bold">Pekerjaan</label>
+              <input class="form-control" name="pekerjaan" placeholder="Contoh: Buruh Harian">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label class="form-label small fw-bold">Status Rumah</label>
+              <input class="form-control" name="status_rumah" placeholder="Milik Sendiri / Sewa">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label small fw-bold">Kondisi Rumah (1-5)</label>
+              <input class="form-control" type="number" min="1" max="5" name="kondisi_rumah" value="3">
+              <small class="text-muted">1: Sangat Buruk, 5: Sangat Baik</small>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label small fw-bold">Kepemilikan Aset (1-5)</label>
+              <input class="form-control" type="number" min="1" max="5" name="kepemilikan_aset" value="3">
+              <small class="text-muted">1: Tidak Punya, 5: Banyak Aset</small>
+            </div>
+          </div>
+          <div class="row mb-4">
+            <div class="col-md-4">
+              <label class="form-label small fw-bold">Status Pekerjaan (1-5)</label>
+              <input class="form-control" type="number" min="1" max="5" name="status_pekerjaan_skor" value="3">
+              <small class="text-muted">1: Tidak Tetap, 5: Tetap</small>
+            </div>
+          </div>
+
+          <h6 class="text-primary fw-bold mb-3 border-bottom pb-2">C. Unggah Dokumen Pendukung (Maks 2MB)</h6>
+          <div class="row mb-4">
+            <div class="col-md-3">
+              <label class="form-label small fw-bold">KTP</label>
+              <input class="form-control form-control-sm" type="file" name="dok_KTP" accept=".pdf,.jpg,.jpeg,.png">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label small fw-bold">Kartu Keluarga</label>
+              <input class="form-control form-control-sm" type="file" name="dok_KK" accept=".pdf,.jpg,.jpeg,.png">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label small fw-bold">SKTM</label>
+              <input class="form-control form-control-sm" type="file" name="dok_SKTM" accept=".pdf,.jpg,.jpeg,.png">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label small fw-bold">Foto Rumah</label>
+              <input class="form-control form-control-sm" type="file" name="dok_FOTO_RUMAH" accept=".jpg,.jpeg,.png">
+            </div>
+          </div>
+
+          <div class="d-grid gap-2">
+            <button class="btn btn-primary btn-lg" type="submit">Kirim Pengajuan</button>
+            <a href="{{ url_for('warga.status') }}" class="btn btn-light">Batal</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

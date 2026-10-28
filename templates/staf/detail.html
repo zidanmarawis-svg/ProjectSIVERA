@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h3 class="fw-bold">Verifikasi Pengajuan #{{ p.id }}</h3>
+  <a href="{{ url_for('staf.verifikasi') }}" class="btn btn-outline-secondary">&larr; Kembali ke Daftar</a>
+</div>
+
+<div class="row">
+  <!-- KOLOM KIRI: Data Profil dan Dokumen -->
+  <div class="col-md-7">
+    <div class="card shadow-sm border-0 mb-4" style="border-radius: 15px;">
+      <div class="card-header bg-white fw-bold pb-0" style="border-radius: 15px 15px 0 0;">Profil Pemohon</div>
+      <div class="card-body">
+        <table class="table table-sm table-borderless">
+          <tr><td width="30%" class="text-muted">Nama Lengkap</td><td class="fw-bold">{{ p.nama }}</td></tr>
+          <tr><td class="text-muted">NIK</td><td>{{ p.nik }}</td></tr>
+          <tr><td class="text-muted">Alamat</td><td>{{ p.alamat }}</td></tr>
+          <tr><td class="text-muted">Penghasilan</td><td>Rp {{ "{:,.0f}".format(p.penghasilan).replace(',', '.') }}</td></tr>
+          <tr><td class="text-muted">Tanggungan</td><td>{{ p.tanggungan }} Orang</td></tr>
+          <tr><td class="text-muted">Pekerjaan</td><td>{{ p.pekerjaan }}</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="card shadow-sm border-0" style="border-radius: 15px;">
+      <div class="card-header bg-white fw-bold pb-0" style="border-radius: 15px 15px 0 0;">Dokumen Lampiran</div>
+      <div class="card-body">
+        <div class="row g-3">
+          {% for d in dokumen %}
+          <div class="col-md-6">
+            <div class="border rounded p-3 d-flex justify-content-between align-items-center">
+              <span class="fw-bold">{{ d.jenis }}</span>
+              <a href="/uploads/{{ d.filename }}" target="_blank" class="btn btn-sm btn-outline-primary">Lihat</a>
+            </div>
+          </div>
+          {% else %}
+          <p class="text-muted">Tidak ada dokumen yang diunggah.</p>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KOLOM KANAN: Hasil AI dan Form Keputusan -->
+  <div class="col-md-5">
+    <!-- Kartu Hasil Penilaian -->
+    <div class="card shadow-sm border-0 mb-4" style="border-radius: 15px;">
+      <div class="card-header bg-dark text-white fw-bold" style="border-radius: 15px 15px 0 0;">Hasil Analisis Sistem</div>
+      <div class="card-body">
+        {% if hasil %}
+          <div class="text-center mb-4">
+            <h6 class="text-muted mb-1">Status Rekomendasi</h6>
+            {% if hasil.status_gabungan == 'Rekomendasi Yakin' %}
+              <h4 class="text-success fw-bold">{{ hasil.status_gabungan }}</h4>
+            {% else %}
+              <h4 class="text-warning fw-bold">{{ hasil.status_gabungan }}</h4>
+            {% endif %}
+          </div>
+          
+          <div class="row text-center mb-2">
+            <div class="col-6 border-end">
+              <small class="text-muted d-block">Skor SAW</small>
+              <span class="fs-4 fw-bold">{{ hasil.skor_saw }}</span><br>
+              <span class="badge bg-secondary">{{ hasil.kategori_saw }}</span>
+            </div>
+            <div class="col-6">
+              <small class="text-muted d-block">Prediksi ML</small>
+              <span class="fs-4 fw-bold">{{ 'Layak' if hasil.prediksi_ml == 1 else 'Tidak' }}</span><br>
+              <span class="badge bg-secondary">Random Forest</span>
+            </div>
+          </div>
+        {% else %}
+          <p class="text-center text-muted">Belum ada hasil penilaian.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Form Keputusan -->
+    <div class="card shadow-sm border-0" style="border-radius: 15px;">
+      <div class="card-header bg-primary text-white fw-bold" style="border-radius: 15px 15px 0 0;">Keputusan Staf</div>
+      <div class="card-body">
+        <form method="post">
+          <div class="mb-3">
+            <label class="form-label fw-bold small">Keputusan</label>
+            <select class="form-select" name="keputusan" required>
+              <option value="" disabled selected>-- Pilih Keputusan --</option>
+              <option value="setuju">Setujui Bantuan</option>
+              <option value="tolak">Tolak Pengajuan</option>
+              <option value="perbaikan">Minta Perbaikan Data</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-bold small">Catatan (Wajib)</label>
+            <textarea class="form-control" name="catatan" rows="3" placeholder="Berikan alasan atau catatan untuk keputusan ini..." required></textarea>
+          </div>
+          <button class="btn btn-primary w-100">Simpan Keputusan</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
